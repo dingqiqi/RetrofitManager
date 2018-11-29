@@ -23,6 +23,8 @@ public class PostFormFileBuilder extends BaseBuilder<PostFormFileBuilder> implem
 
     private MediaType mediaType;
 
+    private String fileKey;
+
     public PostFormFileBuilder addFile(File file) {
         if (files == null) {
             files = new ArrayList<>();
@@ -38,6 +40,11 @@ public class PostFormFileBuilder extends BaseBuilder<PostFormFileBuilder> implem
 
     public PostFormFileBuilder mediaType(MediaType mediaType) {
         this.mediaType = mediaType;
+        return this;
+    }
+
+    public PostFormFileBuilder fileKey(String key) {
+        this.fileKey = key;
         return this;
     }
 
@@ -58,6 +65,6 @@ public class PostFormFileBuilder extends BaseBuilder<PostFormFileBuilder> implem
 
     @Override
     public RetrofitCall build() {
-        return new PostFormFileRequest(url, heads, params, mediaType, files).build();
+        return new PostFormFileRequest(url, heads, params, mediaType, files, fileKey).build();
     }
 }

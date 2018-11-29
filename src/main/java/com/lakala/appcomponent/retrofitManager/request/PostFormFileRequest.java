@@ -1,5 +1,7 @@
 package com.lakala.appcomponent.retrofitManager.request;
 
+import android.text.TextUtils;
+
 import com.lakala.appcomponent.retrofitManager.RetrofitManager;
 import com.lakala.appcomponent.retrofitManager.call.RetrofitCall;
 import com.lakala.appcomponent.retrofitManager.inter.BaseRequestInter;
@@ -27,10 +29,17 @@ public class PostFormFileRequest extends BaseRequest {
 
     private List<File> files;
 
-    public PostFormFileRequest(String url, Map<String, String> heads, Map<String, String> params, MediaType mediaType, List<File> files) {
+    private String fileKey;
+
+    public PostFormFileRequest(String url, Map<String, String> heads, Map<String, String> params, MediaType mediaType, List<File> files, String fileKey) {
         super(url, heads, params);
         this.mediaType = mediaType;
         this.files = files;
+        this.fileKey = fileKey;
+
+        if (TextUtils.isEmpty(fileKey)) {
+            this.fileKey = "file";
+        }
     }
 
     @Override
@@ -70,7 +79,7 @@ public class PostFormFileRequest extends BaseRequest {
 
             for (File file : files) {
                 if (file != null && file.exists()) {
-                    list.add(MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(mediaType, file)));
+                    list.add(MultipartBody.Part.createFormData(fileKey, file.getName(), RequestBody.create(mediaType, file)));
                 }
             }
 
